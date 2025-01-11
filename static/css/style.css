@@ -43,3 +43,56 @@ footer {
 .alert.error {
     color: red;
 }
+
+.course-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #554a4a;
+    border: 2px solid #081c8d;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #f0f6f1;
+}
+
+.course-form .form-input, 
+.course-form .form-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #081c8d;
+    border-radius: 5px;
+}
+
+.course-form .form-input:focus, 
+.course-form .form-textarea:focus {
+    border-color: #4a5f74;
+    outline: none;
+}
+
+.course-form .form-textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.course-form .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #004d99;
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.course-form .btn:hover {
+    background-color: #3fa6bd;
+}

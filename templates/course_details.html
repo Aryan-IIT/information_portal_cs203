@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block content %}
 <head>
     <title>{{ course.name }}</title>
 </head>
-<body>
+ 
     <h1>{{ course.name }} ({{ course.code }})</h1>
+    <br>
     <p><strong>Instructor:</strong> {{ course.instructor }}</p>
     <p><strong>Semester:</strong> {{ course.semester }}</p>
     <p><strong>Schedule:</strong> {{ course.schedule }}</p>
@@ -12,6 +13,10 @@
     <p><strong>Prerequisites:</strong> {{ course.prerequisites }}</p>
     <p><strong>Grading:</strong> {{ course.grading }}</p>
     <p><strong>Description:</strong> {{ course.description }}</p>
-    <a href="{{ url_for('course_catalog') }}">Back to Catalog</a>
+    <div class="mt-5">
+        <p class="text-center mt-4">
+        <a href="{{ url_for('course_catalog') }}" class="btn btn-primary btn-lg">Back to Catalog</a>
+        </p>
+    </div>
 </body>
-</html>
+{% endblock %}

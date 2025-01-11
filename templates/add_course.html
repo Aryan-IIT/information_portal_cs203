@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add Course</h2>
+
+<!-- Course List -->
+<ul>
+    {% for course in courses %}
+        <li><a href="{{ url_for('course_details', code=course['code']) }}">{{ course.name }}</a> - {{ course.code }}</li>
+    {% endfor %}
+</ul>
+
+<!-- Course Adding Form -->
+<form action="{{ url_for('add_course') }}" method="POST" class="course-form">
+    <label for="code">Course Code:</label>
+    <input type="text" id="code" name="code" class="form-input" placeholder="CS209" required><br>
+
+    <label for="name">Course Name:</label>
+    <input type="text" id="name" name="name" class="form-input" placeholder="Introduction to Quantum Mechanics" required><br>
+
+    <label for="instructor">Instructor:</label>
+    <input type="text" id="instructor" name="instructor" class="form-input" placeholder="Prof. Bill Gates" required><br>
+
+    <label for="semester">Semester:</label>
+    <input type="text" id="semester" name="semester" class="form-input" placeholder="Fall 2018" required><br>
+
+    <label for="schedule">Schedule:</label>
+    <input type="text" id="schedule" name="schedule" class="form-input" placeholder="Mon, Wed, Fri 10:00-11:00 AM" required><br>
+
+    <label for="classroom">Classroom:</label>
+    <input type="text" id="classroom" name="classroom" class="form-input" placeholder="10/101" required><br>
+
+    <label for="prerequisites">Prerequisites:</label>
+    <input type="text" id="prerequisites" name="prerequisites" class="form-input" placeholder="None"><br>
+
+    <label for="grading">Grading:</label>
+    <input type="text" id="grading" name="grading" class="form-input" placeholder="10% Attendance, 25% Projects, 25% Midsem, 40% Endsem" required><br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" class="form-input" placeholder="Enter course description here..." required></textarea><br>
+
+    <button type="submit" class="btn btn-primary btn-lg">Add Course</button>
+</form>
+{% endblock %}

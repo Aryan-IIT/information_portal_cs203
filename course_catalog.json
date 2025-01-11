@@ -19,6 +19,17 @@
         "classroom": "AB 7/109",
         "prerequisites": "Basic Python, Linux",
         "grading": "50% Assignment, 50% Quiz",
-        "description": ""
+        "description": "This course discusses various software tools"
+    },
+    {
+        "code": "CS 328",
+        "name": "Introduction to Data Science",
+        "instructor": "Prof. Anirban Dasgupta",
+        "semester": "Fall 2025",
+        "schedule": "Tue, Wed, Fri 13:00-14:00 PM",
+        "classroom": "AB 10/201",
+        "prerequisites": "Basic Python, Machine Learning",
+        "grading": "50% Assignment, 50% Quiz",
+        "description": "This course introduces data science"
     }
 ]
