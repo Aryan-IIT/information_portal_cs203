@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 app = Flask(__name__)
 app.secret_key = 'secret'
 COURSE_FILE = 'course_catalog.json'
-
+print()
 
 # Utility Functions
 def load_courses():
