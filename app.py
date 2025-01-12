@@ -33,15 +33,15 @@ def setup_tracing():
     trace.set_tracer_provider(TracerProvider(resource=resource))
     tracer = trace.get_tracer(__name__)
     
-    # Jaeger Exporter
+    # export to jaeger
     jaeger_exporter = JaegerExporter(
-        agent_host_name="localhost",  # Ensure Jaeger is accessible at this address
+        agent_host_name="localhost",
         agent_port=6831,
     )
     span_processor = BatchSpanProcessor(jaeger_exporter)
     trace.get_tracer_provider().add_span_processor(span_processor)
     
-    # Console Exporter (for debug purposes)
+    # export to console
     console_exporter = ConsoleSpanExporter()
     console_span_processor = BatchSpanProcessor(console_exporter)
     trace.get_tracer_provider().add_span_processor(console_span_processor)
@@ -55,14 +55,14 @@ tracer = setup_tracing()
 def load_courses():
     """Load courses from the JSON file."""
     if not os.path.exists(COURSE_FILE):
-        return []  # Return an empty list if the file doesn't exist
+        return []  # Return of list empty
     with open(COURSE_FILE, 'r') as file:
         return json.load(file)
 
 def save_courses(data):
     """Save new course data to the JSON file."""
-    courses = load_courses()  # Load existing courses
-    courses.append(data)  # Append the new course
+    courses = load_courses()  # Load courses
+    courses.append(data)  # add course  
     with open(COURSE_FILE, 'w') as file:
         json.dump(courses, file, indent=4)
 
@@ -166,6 +166,7 @@ def track_requests():
         span.set_attribute("user.ip", user_ip)
         span.add_event("New request tracked")
 
+# Run the app.py
 if __name__ == '__main__':
     logger.info("Starting the Flask application.")
     app.run(debug=True, host='0.0.0.0')
