@@ -95,6 +95,7 @@ def course_catalog():
         
         return response
 
+#1.1 Implementation, Feature of adding course
 @app.route('/add_course', methods=['GET', 'POST'])
 def add_course():
     """Handle adding a new course."""
@@ -117,6 +118,7 @@ def add_course():
                 }
                 
                 save_courses(course_data)
+                #1.2 feature, logging course addition 
                 logger.info("Course added successfully.", extra={"course": course_data, "user_ip": user_ip})
                 
                 # Add trace attributes
