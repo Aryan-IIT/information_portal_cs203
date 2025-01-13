@@ -143,25 +143,28 @@ def add_course():
 @app.route('/course/<code>')
 def course_details(code):
     """Display details for a specific course."""
-    #2.1 implementation, span for viewing courses. 
+    # 2.1 implementation, span for viewing courses.
     with tracer.start_as_current_span("course-details") as span:
         courses = load_courses()
         user_ip = request.remote_addr
         course = next((course for course in courses if course['code'] == code), None)
         
         if not course:
-            logger.warning("Course not found.", extra={"course_code": code, "user_ip": user_ip})
+            logger.error("Course not found.", extra={"course_code": code, "user_ip": user_ip})
             span.set_attribute("course.exists", False)
             span.set_attribute("user.ip", user_ip)
+            span.set_attribute("error", True)
+            span.set_attribute("error.message", "Course code does not exist.")
             flash(f"No course found with code '{code}'.", "error")
             return redirect(url_for('course_catalog'))
         
+    
         logger.info("Course details accessed.", extra={"course_code": code, "user_ip": user_ip})
         span.set_attribute("course.exists", True)
         span.set_attribute("course.code", code)
         span.set_attribute("user.ip", user_ip)
         return render_template('course_details.html', course=course)
-
+    
 @app.before_request
 def track_requests():
     with tracer.start_as_current_span("request-tracker") as span:
