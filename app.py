@@ -13,12 +13,12 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from opentelemetry.trace import SpanKind
 
-# Flask App Initialization
+#Flask Initialization
 app = Flask(__name__)
 app.secret_key = 'secret'
 COURSE_FILE = 'course_catalog.json'
 
-# Logging Setup
+#Logging Setup
 formatter = json_log_formatter.JSONFormatter()
 json_handler = logging.StreamHandler()
 json_handler.setFormatter(formatter)
@@ -26,7 +26,7 @@ logger = logging.getLogger()
 logger.addHandler(json_handler)
 logger.setLevel(logging.INFO)
 
-# OpenTelemetry Setup
+#OpenTelemetry Setup
 def setup_tracing():
     """Configure OpenTelemetry tracing and Jaeger exporter."""
     resource = Resource.create({"service.name": "course-catalog-service"})
@@ -76,18 +76,19 @@ def index():
 @app.route('/catalog')
 def course_catalog():
     """Display the course catalog page."""
+    #2.1 feature, tracking course catalog spans
     with tracer.start_as_current_span("render-course-catalog") as span:
         start_time = time.time()
         
         courses = load_courses()
         user_ip = request.remote_addr
         logger.info("Course catalog accessed.", extra={"total_courses": len(courses), "user_ip": user_ip})
-        
+        print("##"*50)
         # Add trace attributes
         span.set_attribute("http.method", request.method)
         span.set_attribute("http.route", "/catalog")
-        span.set_attribute("course.count", len(courses))
-        span.set_attribute("user.ip", user_ip)
+        span.set_attribute("course.count", len(courses)) #meta data, number of courses 
+        span.set_attribute("user.ip", user_ip) # span.set_attribute("course.list", courses) [attempting meta data]
         
         response = render_template('course_catalog.html', courses=courses)
         processing_time = time.time() - start_time
@@ -99,6 +100,7 @@ def course_catalog():
 @app.route('/add_course', methods=['GET', 'POST'])
 def add_course():
     """Handle adding a new course."""
+    #2.1 implementation, adding new course span
     with tracer.start_as_current_span("add-course") as span:
         user_ip = request.remote_addr
         
@@ -141,6 +143,7 @@ def add_course():
 @app.route('/course/<code>')
 def course_details(code):
     """Display details for a specific course."""
+    #2.1 implementation, span for viewing courses. 
     with tracer.start_as_current_span("course-details") as span:
         courses = load_courses()
         user_ip = request.remote_addr
