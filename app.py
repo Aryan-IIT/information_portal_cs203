@@ -18,10 +18,22 @@ app = Flask(__name__)
 app.secret_key = 'secret'
 COURSE_FILE = 'course_catalog.json'
 
-# Logging Setup
+######## Logging Setup #########
 formatter = json_log_formatter.JSONFormatter()
+
+#Custom Class 
+class CustomJSONFormatter_(json_log_formatter.JSONFormatter):
+    def json_record(self, message, extra, record):
+        extra['level'] = record.levelname  #Log Level
+        extra['message'] = message
+        extra['time'] = self.formatTime(record, self.datefmt)
+        return extra
+
+#custom formatter
+custom_formatter = CustomJSONFormatter_()
 json_handler = logging.StreamHandler()
-json_handler.setFormatter(formatter)
+json_handler.setFormatter(custom_formatter)
+
 logger = logging.getLogger()
 logger.addHandler(json_handler)
 logger.setLevel(logging.INFO)
@@ -47,7 +59,9 @@ def setup_tracing():
     trace.get_tracer_provider().add_span_processor(console_span_processor)
     
     FlaskInstrumentor().instrument_app(app)
-    LoggingInstrumentor().instrument()
+    # LoggingInstrumentor().instrument() 
+    #Here we can uncomment this line to perform automatic instrumentation for even logging with Otel/Opentelemetry 
+    #however, as a part of the assignment this is not needed. 
     return tracer
 
 tracer = setup_tracing()
@@ -104,7 +118,7 @@ def add_course():
         
         if request.method == 'POST':
             try:
-                # Extract form data
+                #Extract form data
                 course_data = {
                     "code": request.form['code'],
                     "name": request.form['name'],
@@ -121,7 +135,7 @@ def add_course():
                 #1.2 feature, logging course addition 
                 logger.info("Course added successfully.", extra={"course": course_data, "user_ip": user_ip})
                 
-                # Add trace attributes
+                #Add trace attributes
                 span.set_attribute("http.method", request.method)
                 span.set_attribute("http.route", "/add_course")
                 span.add_event("Course saved to catalog.")
